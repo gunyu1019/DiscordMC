@@ -1,0 +1,26 @@
+token: "" # The discord bot token
+channelId: "" # The id of main channel
+
+messageFormat: "" # EX) <red><sender><reset> : <message>
+customColor: false
+supportMarkdown: true
+
+NoMemberMessage: "사람이 없습니다."
+
+embedColor: 0x0070ff
+embedTitle: "**온라인 유저**"
+embedField1: "인원:"
+embedField2: "목록:"
+
+# Formatter used to send from Minecraft Server to Discord
+chatFormat: "**<player>**: <message>"
+
+accessEnable: true
+joinFormat: "**<player>**님이 게임에 들어왔습니다. 현재 플레이어 수: <online>/<max>명"
+leaveFormat: "**<player>**님이 게임에서 나갔습니다. 현재 플레이어 수: <online>/<max>명"
+
+deathEnable: true
+deathFormat: "**<player>님이 사망 하셨습니다.**"
+
+kickEnable: true
+kickFormat: "**<player>님이 추방 되었습니다.**"

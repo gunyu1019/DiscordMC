@@ -1,0 +1,1 @@
+F:\DiscordMC\build\classes\kotlin\main\kr\yhs\discordmc\SamplePlugin.class
