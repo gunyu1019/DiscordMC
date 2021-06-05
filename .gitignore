@@ -23,7 +23,7 @@
 hs_err_pid*
 
 # Gradle Build
-.gradle
+.gradle/
 build/
 
 # IDLE configure
