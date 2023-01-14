@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.8.0"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 
     `maven-publish`
@@ -11,7 +11,7 @@ version = "1.0"
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/")
-    maven(url = "https://oss.sonatype.org/content/repositories/snapshots/") {
+    maven("https://oss.sonatype.org/content/repositories/snapshots/") {
         name = "sonatype-oss-snapshots"
     }
     maven("https://jitpack.io")
@@ -21,9 +21,10 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    compileOnly("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
+    implementation("net.kyori:adventure-api:4.12.0")
+    compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
 
-    implementation("net.dv8tion:JDA:4.2.1_253")
+    implementation("net.dv8tion:JDA:5.0.0-beta.2")
 }
 
 tasks {
@@ -36,10 +37,10 @@ tasks {
     }
 
     compileKotlin {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "17"
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "17"
     }
 
     processResources {

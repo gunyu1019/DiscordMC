@@ -1,1 +1,1 @@
-F:\DiscordMC\build\classes\kotlin\main\kr\yhs\discordmc\SamplePlugin.class
+Z:\DiscordMC\build\classes\kotlin\main\kr\yhs\discordmc\Main$Companion.class;Z:\DiscordMC\build\classes\kotlin\main\kr\yhs\discordmc\Main.class;Z:\DiscordMC\build\classes\kotlin\main\kr\yhs\discordmc\listener\BukkitListener.class;Z:\DiscordMC\build\classes\kotlin\main\kr\yhs\discordmc\listener\DiscordListener.class;Z:\DiscordMC\build\classes\kotlin\main\kr\yhs\discordmc\listener\InteractionListener.class

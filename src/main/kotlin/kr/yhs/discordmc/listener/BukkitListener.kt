@@ -2,6 +2,7 @@ package kr.yhs.discordmc.listener
 
 import io.papermc.paper.event.player.AsyncChatEvent
 import kr.yhs.discordmc.Main
+import net.dv8tion.jda.api.EmbedBuilder
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.entity.EntityType
@@ -10,8 +11,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.*
+import org.bukkit.plugin.java.JavaPlugin
+import java.awt.Color
 
-class BukkitListener(private val plugin: Main) : Listener {
+class BukkitListener(private val plugin: JavaPlugin) : Listener {
     private fun replacePlayer(player: Player, formatter: String): String {
         return formatter.replace("<player>", player.name)
             .replace("<address>", player.address.address.hostAddress)
@@ -25,15 +28,19 @@ class BukkitListener(private val plugin: Main) : Listener {
         return player.replace("<message>", message)
     }
 
-    private fun replaceAccessFormat(event: PlayerEvent, formatter: String): String {
+    private fun replaceAccessFormat(
+        event: PlayerEvent,
+        formatter: String,
+        onlineMemberCount: Int = Bukkit.getOnlinePlayers().size
+    ): String {
         val player: String = replacePlayer(event.player, formatter)
-        return player.replace("<online>", "${Bukkit.getOnlinePlayers().size}")
+        return player.replace("<online>", "${onlineMemberCount}")
             .replace("<max>", "${Bukkit.getMaxPlayers()}")
     }
 
     private fun replaceDeathFormat(event: PlayerDeathEvent, formatter: String): String {
         val player: String = replacePlayer(event.entity.player!!, formatter)
-        return player.replace("<message>", (event.deathMessage() as TextComponent).content())
+        return player.replace("<message>", event.deathMessage().toString())
     }
 
     @EventHandler
@@ -45,22 +52,35 @@ class BukkitListener(private val plugin: Main) : Listener {
     }
 
     @EventHandler
-    fun onJoin(event: PlayerJoinEvent) {
-        if (!plugin.config.getBoolean("accessEnable")) return
+        fun onJoin(event: PlayerJoinEvent) {
+            if (!plugin.config.getBoolean("accessEnable")) return
         val channel = Main.jda?.getTextChannelById(plugin.config.getString("channelId")!!)
 
         val format: String =
             plugin.config.getString("joinFormat") ?: "**<player>**님이 게임에 들어왔습니다. 현재 플레이어 수: <online>/<max>명"
-        channel?.sendMessage(replaceAccessFormat(event, format))?.queue()
+        val embed = EmbedBuilder()
+            .setAuthor(
+                replaceAccessFormat(event, format),
+                null,
+                "https://crafatar.com/avatars/${event.player.uniqueId}"
+            )
+            .setColor(Color.green)
+        channel?.sendMessageEmbeds(embed.build())?.queue()
     }
 
     @EventHandler
     fun onLeave(event: PlayerQuitEvent) {
         if (!plugin.config.getBoolean("accessEnable")) return
         val channel = Main.jda?.getTextChannelById(plugin.config.getString("channelId")!!)
-        val format: String =
-            plugin.config.getString("leaveFormat") ?: "**<player>**님이 게임에서 나갔습니다. 현재 플레이어 수: <online>/<max>명"
-        channel?.sendMessage(replaceAccessFormat(event, format))?.queue()
+        val format: String = plugin.config.getString("leaveFormat") ?: "**<player>**님이 게임에서 나갔습니다. 현재 플레이어 수: <online>/<max>명"
+        val embed = EmbedBuilder()
+            .setAuthor(
+                replaceAccessFormat(event, format, Bukkit.getOnlinePlayers().size - 1),
+                null,
+                "https://crafatar.com/avatars/${event.player.uniqueId}"
+            )
+            .setColor(Color.red)
+        channel?.sendMessageEmbeds(embed.build())?.queue()
     }
 
     @EventHandler
@@ -70,7 +90,9 @@ class BukkitListener(private val plugin: Main) : Listener {
 
         val channel = Main.jda?.getTextChannelById(plugin.config.getString("channelId")!!)
         val format: String = plugin.config.getString("deathFormat") ?: "**<player>님이 사망 하셨습니다.**"
-        channel?.sendMessage(replaceDeathFormat(event, format))?.queue()
+        val embed = EmbedBuilder()
+            .setAuthor(replaceDeathFormat(event, format), null, "https://crafatar.com/avatars/${event.player.uniqueId}")
+        channel?.sendMessageEmbeds(embed.build())?.queue()
     }
 
     @EventHandler
@@ -78,7 +100,14 @@ class BukkitListener(private val plugin: Main) : Listener {
         if (!plugin.config.getBoolean("kickEnable")) return
         val channel = Main.jda?.getTextChannelById(plugin.config.getString("channelId")!!)
         val format: String = plugin.config.getString("kickFormat") ?: "**<player>님이 추방 하셨습니다.**"
-        channel?.sendMessage(replaceAccessFormat(event, format))?.queue()
+        val embed = EmbedBuilder()
+            .setColor(Color.red)
+            .setAuthor(
+                replaceAccessFormat(event, format, Bukkit.getOnlinePlayers().size - 1),
+                null,
+                "https://crafatar.com/avatars/${event.player.uniqueId}"
+            )
+        channel?.sendMessageEmbeds(embed.build())?.queue()
     }
 
     @EventHandler

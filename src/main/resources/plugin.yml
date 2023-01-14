@@ -1,0 +1,8 @@
+name: ${project.name}
+version: ${project.version}
+api-version: 1.19
+main: kr.yhs.discordmc.Main
+
+commands:
+  discord:
+    usage: /discord activity [address]

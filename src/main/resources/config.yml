@@ -16,11 +16,15 @@ embedField2: "목록:"
 chatFormat: "**<player>**: <message>"
 
 accessEnable: true
-joinFormat: "**<player>**님이 게임에 들어왔습니다. 현재 플레이어 수: <online>/<max>명"
-leaveFormat: "**<player>**님이 게임에서 나갔습니다. 현재 플레이어 수: <online>/<max>명"
+joinFormat: "<player>님이 게임에 들어왔습니다. 현재 플레이어 수: <online>/<max>명"
+leaveFormat: "<player>님이 게임에서 나갔습니다. 현재 플레이어 수: <online>/<max>명"
 
 deathEnable: true
-deathFormat: "**<player>님이 사망 하셨습니다.**"
+deathFormat: "<player>님이 사망 하셨습니다."
 
 kickEnable: true
-kickFormat: "**<player>님이 추방 되었습니다.**"
+kickFormat: "<player>님이 추방 되었습니다."
+
+onlineCommandEnable: true
+onlineCommandName: "online"
+onlineCommandDescription: "서버에 접속한 사용자 정보를 불러옵니다."
